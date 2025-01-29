@@ -6,11 +6,12 @@ function App() {
   const [query, setQuery] = useState('')
   const [url, setUrl] = useState('')
 
+  // https://youtube-video-downloader-kfy6.vercel.app
   const [selectedQuality, setSelectedQuality] = useState("135");
   console.log(selectedQuality)
   const videoRef = useRef()
   const getDownload = async () => {
-    const response = await fetch(`https://youtube-video-downloader-kfy6.vercel.app?url=${query}`, {
+    const response = await fetch(`https://youtube-video-downloader-kfy6.vercel.app/input-link?url=${query}`, {
       method: 'GET',
     })
 

@@ -1,6 +1,11 @@
-
+const ytdl = require('ytdl-core');
+const fs = require('fs')
+const pathh = require('path')
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 const download = async (folderPath, url, quality) => {
-  
+
     const videoId = await ytdl.getURLVideoID(url)
     const info = await ytdl.getInfo(videoId)
     const format = ytdl.chooseFormat(info.formats, { quality: quality })
@@ -38,10 +43,6 @@ const download = async (folderPath, url, quality) => {
             });
     })
 }
-
-
-
-
 
 const mergeVideoAudio = (folderPath) => {
 
@@ -94,33 +95,7 @@ function removeInvalidCharactersAndEmojis(inputString) {
 // console.log(sanitizedString);
 
 
+module.exports = { download, mergeVideoAudio }
 
 
 
-
-
-
-
-
-
-const { url } = req.query
-
-// const url = 'https://youtu.be/t_It_LkwepA?si=KIFZA1p7XNBeXM0c';
-try {
-    const videoId = await ytdl.getURLVideoID(url)
-    const info = await ytdl.getInfo(url)
-    // console.log(videoId)
-    // console.log(info.formats)
-
-
-    const data = {
-        url: 'https://www.youtube.com/embed/' + videoId,
-        downloadUrl: url
-    }
-
-
-    res.json(data)
-
-} catch (error) {
-    console.log(error)
-}
