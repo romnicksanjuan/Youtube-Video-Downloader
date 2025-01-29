@@ -12,14 +12,15 @@ const cors = require('cors')
 const app = express()
 const fs = require('fs');
 const ytdl = require("@distube/ytdl-core");
-// const ytdl = require("ytdl-core");
+// const ytdl = require('ytdl-core-discord');
+
 
 
 const local = 'http://localhost:5173'
 const domain = 'https://youtube-video-downloader-phi-five.vercel.app'
 
 app.use(cors({
-    origin: domain,
+    origin: 'https://video-downloader-steel-seven.vercel.app',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
@@ -29,7 +30,27 @@ app.use(express.json())
 
 
 app.get('/', async (req, res) => {
-    res.send('server is running')
+
+    const itag = 135
+    const url = 'https://youtu.be/xd9ee7vaavI?si=6WX-rDoj4j-5auMM'
+    const videoId = ytdl.getURLVideoID(url)
+    const info = await ytdl.getInfo(videoId)
+    // const format = ytdl.chooseFormat(info.formats, { quality: quality })
+    // const format = info.formats.find(f => f.itag === quality);
+    // download video
+
+    ytdl(url, { format: itag }).pipe(fs.createWriteStream('video.mp4'))
+        .on('finish', () => console.log('Download complete.'));
+
+    // if (format) {
+    //     console.log(`Downloading video in format: ${format.itag}`);
+    //     ytdl(url, { format })
+    //         .pipe(fs.createWriteStream(`video.mp4`))
+    //         .on('finish', () => console.log('Download complete.'));
+    // } else {
+    //     console.error('No suitable format found!');
+    // }
+
 })
 
 

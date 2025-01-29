@@ -1,4 +1,5 @@
-const ytdl = require("@distube/ytdl-core");
+const ytdl = require('@distube/ytdl-core');
+
 const fs = require('fs')
 const pathh = require('path')
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
@@ -6,9 +7,18 @@ const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 const download = async (folderPath, url, quality) => {
 
-    const videoId = await ytdl.getURLVideoID(url)
+    const videoId = ytdl.getURLVideoID(url)
     const info = await ytdl.getInfo(videoId)
+
+    // https://youtu.be/aYD2-KySKdM?si=oXM6k4oRGeYX9jaB
+
+    // const format = info.formats.find(f => f.itag === quality);
     const format = ytdl.chooseFormat(info.formats, { quality: quality })
+
+    if (!format) {
+        console.error(`No format found for itag ${quality}`);
+        return;
+    }
 
     return new Promise(async (resolve, reject) => {
 
