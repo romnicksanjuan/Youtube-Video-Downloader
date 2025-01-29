@@ -44,13 +44,13 @@ app.get('/input-link', async (req, res) => {
     try {
         const videoId = await ytdl.getURLVideoID(url)
         // const info = await ytdl.getInfo(url)
-        // ytdl.getInfo(url)
-        //     .then(info => {
-        //         console.log(info);
-        //     })
-        //     .catch(err => {
-        //         console.error('Error fetching video info:', err);
-        //     });
+        ytdl.getInfo(url)
+            .then(info => {
+                console.log(info);
+            })
+            .catch(err => {
+                console.error('Error fetching video info:', err);
+            });
        
         const data = {
             url: 'https://www.youtube.com/embed/' + videoId,
@@ -103,7 +103,7 @@ app.get("/download", async (req, res) => {
         }
 
 
-        const videoId = await ytdl.getURLVideoID(videoUrl);
+        const videoId =  ytdl.getURLVideoID(videoUrl);
         const info = await ytdl.getInfo(videoId);
 
         const videoTitle = info.videoDetails.title
