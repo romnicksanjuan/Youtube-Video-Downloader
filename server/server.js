@@ -31,10 +31,10 @@ app.get('/input-link', async (req, res) => {
     const { url } = req.query
 
 
-    // if (!url) {
-    //     res.send('link is invalid')
-    //     return;
-    // }
+    if (!url) {
+        res.send('link is invalid')
+        return;
+    }
 
     // console.log(url)
 
