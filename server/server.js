@@ -30,27 +30,7 @@ app.use(express.json())
 
 
 app.get('/', async (req, res) => {
-
-    const itag = 135
-    const url = 'https://youtu.be/xd9ee7vaavI?si=6WX-rDoj4j-5auMM'
-    const videoId = ytdl.getURLVideoID(url)
-    const info = await ytdl.getInfo(videoId)
-    // const format = ytdl.chooseFormat(info.formats, { quality: quality })
-    // const format = info.formats.find(f => f.itag === quality);
-    // download video
-
-    ytdl(url, { format: itag }).pipe(fs.createWriteStream('video.mp4'))
-        .on('finish', () => console.log('Download complete.'));
-
-    // if (format) {
-    //     console.log(`Downloading video in format: ${format.itag}`);
-    //     ytdl(url, { format })
-    //         .pipe(fs.createWriteStream(`video.mp4`))
-    //         .on('finish', () => console.log('Download complete.'));
-    // } else {
-    //     console.error('No suitable format found!');
-    // }
-
+    res.send('server is running')
 })
 
 
