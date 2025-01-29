@@ -14,7 +14,11 @@ const ytdl = require('ytdl-core');
 // TypeScript: import ytdl from 'ytdl-core'; with --esModuleInterop
 // TypeScript: import * as ytdl from 'ytdl-core'; with --allowSyntheticDefaultImports
 // TypeScript: import ytdl = require('ytdl-core'); with neither of the above
-app.use(cors())
+app.use(cors({
+    origin: 'https://youtube-video-downloader-phi-five.vercel.app',
+    methods: ['GET', 'POST'],     // Allowed methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+}))
 app.use("/videos", express.static(pathh.join(__dirname, "videos")));
 app.use(express.json())
 
@@ -45,133 +49,87 @@ app.get('/', async (req, res) => {
 })
 
 
-app.get("/download", async (req, res) => {
+// app.get("/download", async (req, res) => {
 
 
-    const date = Date.now()
-    const folderPath = pathh.join(__dirname, `${date}-videos`);
+//     const date = Date.now()
+//     const folderPath = pathh.join(__dirname, `${date}-videos`);
 
-    fs.mkdir(folderPath, { recursive: true }, (err) => {
-        if (err) {
-            console.error('Error creating video folder:', err);
-            return;
-        }
-        console.log('Video folder created successfully');
-    });
-
-
-    const videoUrl = req.query.url;
-    const quality = req.query.quality;
-
-    console.log(req.query.quality)
-    console.log(videoUrl)
-
-    // const url = 'https://youtu.be/t_It_LkwepA?si=KIFZA1p7XNBeXM0c';
-    try {
-        // Step 1: Download video with the specified quality
-        const d = await download(folderPath, videoUrl, quality);
-
-        if (!d) {
-            return res.status(500).send('Failed to download video');
-        }
-
-        // Step 2: Only proceed to merge after download is complete
-        const mergedVideo = await mergeVideoAudio(folderPath);
-
-        if (!mergedVideo) {
-            return res.status(500).send('Failed to merge video and audio');
-        }
-
-        const videoPath = pathh.join(folderPath, 'output_video.mp4'); // Update with your video file path
-        // console.log(videoPath)
-        const videoId = await ytdl.getURLVideoID(videoUrl);
-        const info = await ytdl.getInfo(videoId);
-
-        const videoTitle = info.videoDetails.title
-        const title = videoTitle.replace(/[\/:*?"<>|]/g, '');
-        const cleanTitle = videoTitle.replace(/[^\p{L}\p{N}\p{P}\p{Z}]/gu, '')
-
-        console.log('VIDEO PATH:', videoPath)
-        // Step 3: Check if the video exists
-        fs.access(videoPath, fs.constants.F_OK, (err) => {
-            if (err) {
-                // If file doesn't exist, return an error
-                return res.status(404).send('Video not found');
-            }
+//     fs.mkdir(folderPath, { recursive: true }, (err) => {
+//         if (err) {
+//             console.error('Error creating video folder:', err);
+//             return;
+//         }
+//         console.log('Video folder created successfully');
+//     });
 
 
-            // Step 4: Set headers for video content type and stream the video
-            res.setHeader('Content-Type', `${cleanTitle}/mp4`);
-            res.setHeader('Content-Disposition', `attachment; filename="${cleanTitle}.mp4"`);
+//     const videoUrl = req.query.url;
+//     const quality = req.query.quality;
 
-            // Stream the video to the response using pipe
-            const videoStream = fs.createReadStream(videoPath);
-            videoStream.pipe(res);  // Pipe the video stream to the response
+//     console.log(req.query.quality)
+//     console.log(videoUrl)
 
-            res.on('finish', () => {
-                console.log('Video Downloaded Successfully')
-                if (fs.existsSync(folderPath)) {
-                    fs.rm(folderPath, { recursive: true, force: true }, (err) => {
-                        if (err) {
-                          console.error('Error removing directory:', err);
-                        } else {
-                          console.log('Directory removed successfully');
-                        }
-                      });
-                }
-            })
+//     try {
 
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("An error occurred while processing the request");
-    }
+//         const d = await download(folderPath, videoUrl, quality);
 
-    // if (!videoUrl) {
-    //   return res.status(400).send("Missing video URL");
-    // }
-
-    // try {
-    //   const videoInfo = await ytdl.getInfo(videoUrl);
-    //   const videoTitle = videoInfo.videoDetails.title.replace(/[^a-zA-Z0-9 ]/g, "_");
-
-    //   res.header("Content-Disposition", `attachment; filename="${videoTitle}.mp4"`);
-
-    //   ytdl(videoUrl, {
-    //     format: "mp4",
-    //   }).pipe(res);
-
-    // } catch (error) {
-    //   console.error(error);
-    //   res.status(500).send("Failed to download video");
-    // }
-});
+//         if (!d) {
+//             return res.status(500).send('Failed to download video');
+//         }
 
 
+//         const mergedVideo = await mergeVideoAudio(folderPath);
+
+//         if (!mergedVideo) {
+//             return res.status(500).send('Failed to merge video and audio');
+//         }
 
 
+//         const videoId = await ytdl.getURLVideoID(videoUrl);
+//         const info = await ytdl.getInfo(videoId);
 
-app.get('/download-video', (req, res) => {
-    const p = '1738062244781-videos'
-    const videoPath = pathh.join(__dirname, p, 'output_video.mp4'); // Update with your video file path
+//         const videoTitle = info.videoDetails.title
+//         const title = videoTitle.replace(/[\/:*?"<>|]/g, '');
+//         const cleanTitle = videoTitle.replace(/[^\p{L}\p{N}\p{P}\p{Z}]/gu, '')
 
-    // Check if the video exists
-    fs.access(videoPath, fs.constants.F_OK, (err) => {
-        if (err) {
-            // If file doesn't exist, return an error
-            return res.status(404).send('Video not found');
-        }
+//         console.log('VIDEO PATH:', videoPath)
 
-        // Set headers for video content type
-        res.setHeader('Content-Type', 'video/mp4');
-        res.setHeader('Content-Disposition', 'attachment; filename="video.mp4"');
+//         fs.access(videoPath, fs.constants.F_OK, (err) => {
+//             if (err) {
+            
+//                 return res.status(404).send('Video not found');
+//             }
 
-        // Stream the video to the response using pipe
-        const videoStream = fs.createReadStream(videoPath);
-        videoStream.pipe(res);// Pipe the video stream to the response
-    });
 
-})
+     
+//             res.setHeader('Content-Type', `${cleanTitle}/mp4`);
+//             res.setHeader('Content-Disposition', `attachment; filename="${cleanTitle}.mp4"`);
+
+  
+//             const videoStream = fs.createReadStream(videoPath);
+//             videoStream.pipe(res); 
+
+//             res.on('finish', () => {
+//                 console.log('Video Downloaded Successfully')
+//                 if (fs.existsSync(folderPath)) {
+//                     fs.rm(folderPath, { recursive: true, force: true }, (err) => {
+//                         if (err) {
+//                           console.error('Error removing directory:', err);
+//                         } else {
+//                           console.log('Directory removed successfully');
+//                         }
+//                       });
+//                 }
+//             })
+
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send("An error occurred while processing the request");
+//     }
+
+// });
 
 app.listen(3000, () => {
     console.log('server is running')
@@ -179,7 +137,7 @@ app.listen(3000, () => {
 
 
 const download = async (folderPath, url, quality) => {
-    // const url = 'https://youtu.be/t_It_LkwepA?si=urlczUQ4Gyp_L6ty';
+  
     const videoId = await ytdl.getURLVideoID(url)
     const info = await ytdl.getInfo(videoId)
     const format = ytdl.chooseFormat(info.formats, { quality: quality })
@@ -196,8 +154,7 @@ const download = async (folderPath, url, quality) => {
             console.error('No suitable format found!');
         }
 
-        // const videoStream = ytdl(url, { quality: 'highestvideo' });
-        // const audioStream = ytdl(url, { quality: 'highestaudio' });
+
 
 
         // download audio
@@ -206,7 +163,7 @@ const download = async (folderPath, url, quality) => {
         const stream = ytdl(url, { filter: 'audioonly' });
 
         ffmpeg(stream)
-            .audioBitrate(128) // Adjust bitrate as needed
+            .audioBitrate(128)
             .save(`${folderPath}/audio.mp3`)
             .on('end', () => {
                 console.log('Audio file has been saved as:', outputFilePath);
@@ -219,14 +176,13 @@ const download = async (folderPath, url, quality) => {
     })
 }
 
-// download()
 
 
 
 
 const mergeVideoAudio = (folderPath) => {
 
-    const videoFile = pathh.resolve(`${folderPath}/video.mp4`); // Replace with your video file path
+    const videoFile = pathh.resolve(`${folderPath}/video.mp4`);
     const audioFile = pathh.resolve(`${folderPath}/audio.mp3`);
     const outputPath = `${folderPath}/output_video.mp4`;
 

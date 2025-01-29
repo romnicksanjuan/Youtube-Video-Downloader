@@ -10,7 +10,7 @@ function App() {
   console.log(selectedQuality)
   const videoRef = useRef()
   const getDownload = async () => {
-    const response = await fetch(`http://localhost:3000?url=${query}`, {
+    const response = await fetch(`https://youtube-video-downloader-kfy6.vercel.app?url=${query}`, {
       method: 'GET',
     })
 
@@ -25,7 +25,7 @@ function App() {
 
     try {
       // Open the download link in a new tab
-      const downloadUrl = `http://localhost:3000/download?url=${encodeURIComponent(url)}&quality=${selectedQuality}`;
+      const downloadUrl = `https://youtube-video-downloader-kfy6.vercel.app/download?url=${encodeURIComponent(url)}&quality=${selectedQuality}`;
       const link = document.createElement("a");
       link.href = downloadUrl;
       link.setAttribute("download", "vovo.mp4");
