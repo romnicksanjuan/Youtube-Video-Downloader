@@ -3,4 +3,4 @@ const domain = {
     server: 'https://youtube-video-downloader-kfy6.vercel.app'
 }
 
-export default domain.local
+export default domain.server
