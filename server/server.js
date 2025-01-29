@@ -21,6 +21,7 @@ app.use(cors({
     origin: domain,
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }))
 app.use("/videos", express.static(pathh.join(__dirname, "videos")));
 app.use(express.json())
@@ -42,21 +43,20 @@ app.get('/input-link', async (req, res) => {
 
 
     try {
-        const videoId = await ytdl.getURLVideoID(url)
+        const videoId =  ytdl.getURLVideoID(url)
         // const info = await ytdl.getInfo(url)
-        ytdl.getInfo(url)
-            .then(info => {
-                console.log(info);
-            })
-            .catch(err => {
-                console.error('Error fetching video info:', err);
-            });
+        // ytdl.getInfo(url)
+        //     .then(info => {
+        //         console.log(info);
+        //     })
+        //     .catch(err => {
+        //         console.error('Error fetching video info:', err);
+        //     });
        
         const data = {
             url: 'https://www.youtube.com/embed/' + videoId,
             downloadUrl: url
         }
-
 
         res.json(data)
 

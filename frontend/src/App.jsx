@@ -89,7 +89,7 @@ function App() {
 
         {!video && <div>
           <input type="text" onChange={(e) => setQuery(e.target.value)} />
-          <button onClick={() => getDownload()}>Download</button>
+          <button onClick={() => getDownload()}>Paste Url</button>
         </div>}
 
 
