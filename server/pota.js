@@ -92,3 +92,35 @@ function removeInvalidCharactersAndEmojis(inputString) {
 
 // const sanitizedString = removeInvalidCharactersAndEmojis(exampleString);
 // console.log(sanitizedString);
+
+
+
+
+
+
+
+
+
+
+
+const { url } = req.query
+
+// const url = 'https://youtu.be/t_It_LkwepA?si=KIFZA1p7XNBeXM0c';
+try {
+    const videoId = await ytdl.getURLVideoID(url)
+    const info = await ytdl.getInfo(url)
+    // console.log(videoId)
+    // console.log(info.formats)
+
+
+    const data = {
+        url: 'https://www.youtube.com/embed/' + videoId,
+        downloadUrl: url
+    }
+
+
+    res.json(data)
+
+} catch (error) {
+    console.log(error)
+}
