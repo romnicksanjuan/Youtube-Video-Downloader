@@ -11,10 +11,14 @@ const cors = require('cors')
 
 const app = express()
 const fs = require('fs');
-const ytdl = require('ytdl-core');
+const ytdl = require("@distube/ytdl-core");
+
+
+const local = 'http://localhost:5173'
+const domain = 'https://youtube-video-downloader-phi-five.vercel.app'
 
 app.use(cors({
-    origin: 'https://youtube-video-downloader-phi-five.vercel.app',
+    origin: domain,
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }))
@@ -36,15 +40,18 @@ app.get('/input-link', async (req, res) => {
         return;
     }
 
-    // console.log(url)
 
     try {
         const videoId = await ytdl.getURLVideoID(url)
-        const info = await ytdl.getInfo(url)
-        // console.log(videoId)
-        // console.log(info.formats)
-
-
+        // const info = await ytdl.getInfo(url)
+        // ytdl.getInfo(url)
+        //     .then(info => {
+        //         console.log(info);
+        //     })
+        //     .catch(err => {
+        //         console.error('Error fetching video info:', err);
+        //     });
+       
         const data = {
             url: 'https://www.youtube.com/embed/' + videoId,
             downloadUrl: url

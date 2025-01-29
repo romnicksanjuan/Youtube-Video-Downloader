@@ -1,4 +1,4 @@
-const ytdl = require('ytdl-core');
+const ytdl = require("@distube/ytdl-core");
 const fs = require('fs')
 const pathh = require('path')
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
