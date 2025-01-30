@@ -11,16 +11,16 @@ const cors = require('cors')
 
 const app = express()
 const fs = require('fs');
-const ytdl = require("@distube/ytdl-core");
+const ytdl = require('ytdl-core');
 // const ytdl = require('ytdl-core-discord');
 
 
 
 const local = 'http://localhost:5173'
-const domain = 'https://youtube-video-downloader-phi-five.vercel.app'
+const domain = 'https://video-downloader-steel-seven.vercel.app'
 
 app.use(cors({
-    origin: 'https://video-downloader-steel-seven.vercel.app',
+    origin: local,
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
@@ -151,6 +151,15 @@ app.get("/download", async (req, res) => {
     }
 
 });
+
+
+app.get('/download-video', (req, res) => {
+    const file = pathh.join(__dirname, 'tanjiro.mp4')
+    console.log('file:', file)
+    res.download(file, 'tanjiro.mp4', (err) => {
+        console.log(err)
+    })
+})
 
 app.listen(3000, () => {
     console.log('server is running')

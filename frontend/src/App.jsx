@@ -7,6 +7,7 @@ function App() {
   const [query, setQuery] = useState('')
   const [url, setUrl] = useState('')
 
+  // https://youtu.be/aYD2-KySKdM?si=ng_ESlOKmVPIGUyd
   // https://youtube-video-downloader-kfy6.vercel.app
   const [selectedQuality, setSelectedQuality] = useState("135");
   console.log(selectedQuality)
@@ -46,6 +47,17 @@ function App() {
       method: 'GET'
     })
 
+  }
+
+
+  const downloadVideo = async () => {
+    const fileUrl = 'http://localhost:3000/download-video'; // Node.js server URL
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.setAttribute('download', 'video.mp4'); // Suggested filename
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
   }
 
 
@@ -91,7 +103,7 @@ function App() {
         <button onClick={() => demo()}>demo</button>
 
 
-
+        <button onClick={() => downloadVideo()}>Download Video</button>
 
 
 
