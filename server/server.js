@@ -20,7 +20,7 @@ const local = 'http://localhost:5173'
 const domain = 'https://video-downloader-steel-seven.vercel.app'
 
 app.use(cors({
-    origin: local,
+    origin: domain,
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
