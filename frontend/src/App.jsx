@@ -51,7 +51,7 @@ function App() {
 
 
   const downloadVideo = async () => {
-    cons
+   try {
     const fileUrl = `${DOMAIN}/download-video`; // Node.js server URL
         const link = document.createElement('a');
         link.href = fileUrl;
@@ -59,6 +59,10 @@ function App() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+   } catch (error) {
+    console.log(error)
+   }
+    
   }
 
 
@@ -101,7 +105,7 @@ function App() {
 
 
 
-        <button onClick={() => demo()}>demo</button>
+        <button id='bobo' onClick={() => demo()}>demo</button>
 
 
         <button onClick={() => downloadVideo()}>Download Video</button>
