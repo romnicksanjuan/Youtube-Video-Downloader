@@ -51,7 +51,7 @@ function App() {
 
 
   const downloadVideo = async () => {
-    const fileUrl = 'http://localhost:3000/download-video'; // Node.js server URL
+    const fileUrl = `${DOMAIN}/download-video`; // Node.js server URL
         const link = document.createElement('a');
         link.href = fileUrl;
         link.setAttribute('download', 'video.mp4'); // Suggested filename
